@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>InfoNews - Meu Perfil</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1><a href="index.html">InfoNews</a></h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Início</a></li>
+        <li><a href="regiao.html?r=sul">Sul</a></li>
+        <li><a href="regiao.html?r=sudeste">Sudeste</a></li>
+        <li><a href="regiao.html?r=norte">Norte</a></li>
+        <li id="nav-auth"></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container" style="max-width: 500px;">
+    <div class="card">
+      <h2>O Meu Perfil</h2>
+      <div style="margin-top: 15px;">
+        <p><strong>Nome de Utilizador:</strong> <span id="profile-user"></span></p>
+        <p><strong>Tipo de Conta:</strong> <span id="profile-role"></span></p>
+      </div>
+      <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
+      <h3>Alterar Palavra-passe</h3>
+      <form id="change-pass-form" style="margin-top: 10px;">
+        <div class="form-group">
+          <label>Nova Palavra-passe</label>
+          <input type="password" id="new-password" required>
+        </div>
+        <button type="submit">Atualizar Palavra-passe</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    checkAuth(); // Garante que apenas utilizadores logados acedem
+
+    const user = getCurrentUser();
+    document.getElementById('profile-user').innerText = user.username;
+    document.getElementById('profile-role').innerText = user.role.toUpperCase();
+
+    document.getElementById('change-pass-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const newPass = document.getElementById('new-password').value;
+      
+      let users = JSON.parse(localStorage.getItem('users')) || [];
+      users = users.map(u => {
+        if (u.username === user.username) {
+          u.password = newPass;
+        }
+        return u;
+      });
+
+      localStorage.setItem('users', JSON.stringify(users));
+      
+      // Atualiza utilizador atual na sessão
+      user.password = newPass;
+      localStorage.setItem('currentUser', JSON.stringify(user));
+
+      alert('Palavra-passe alterada com sucesso!');
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>

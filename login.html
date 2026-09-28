@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - InfoNews</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container" style="max-width: 400px; margin-top: 50px;">
+    <div class="card">
+      <h2>Entrar no Sistema</h2>
+      <form id="login-form">
+        <div class="form-group">
+          <label>Utilizador</label>
+          <input type="text" id="username" required>
+        </div>
+        <div class="form-group">
+          <label>Palavra-passe</label>
+          <input type="password" id="password" required>
+        </div>
+        <button type="submit">Entrar</button>
+      </form>
+      <p style="margin-top: 15px;">Ainda não tem conta? <a href="cadastro.html">Registe-se</a></p>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script>
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+      const res = loginUser(user, pass);
+      
+      if (res.success) {
+        alert('Login efetuado com sucesso!');
+        window.location.href = res.user.role === 'admin' ? 'cms-admin.html' : 'index.html';
+      } else {
+        alert(res.message);
+      }
+    });
+  </script>
+</body>
+</html>

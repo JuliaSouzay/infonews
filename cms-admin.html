@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel CMS - Administração</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Painel de Controlo CMS</h1>
+    <a href="index.html">Voltar ao Site</a>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h3>Criar Nova Notícia</h3>
+      <form id="news-form">
+        <div class="form-group">
+          <label>Título</label>
+          <input type="text" id="news-title" required>
+        </div>
+        <div class="form-group">
+          <label>Região</label>
+          <select id="news-region">
+            <option value="sul">Sul</option>
+            <option value="sudeste">Sudeste</option>
+            <option value="norte">Norte</option>
+            <option value="nordeste">Nordeste</option>
+            <option value="centro-oeste">Centro-Oeste</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Conteúdo</label>
+          <textarea id="news-content" rows="4" required></textarea>
+        </div>
+        <button type="submit">Publicar Notícia</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3>Notícias Publicadas</h3>
+      <table border="1" width="100%" style="border-collapse: collapse; margin-top: 10px; text-align: left;">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Região</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody id="news-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/cms.js"></script>
+  <script>
+    // Validação de Acesso: Apenas Administradores podem estar aqui
+    checkAuth('admin');
+
+    renderAdminTable();
+
+    document.getElementById('news-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = document.getElementById('news-title').value;
+      const region = document.getElementById('news-region').value;
+      const content = document.getElementById('news-content').value;
+
+      saveNews(title, region, content);
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>
